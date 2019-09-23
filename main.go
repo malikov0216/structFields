@@ -118,6 +118,7 @@ func main () {
 	//TestAssign(&t)
 	var a = A{"a", 2, "cdcsdcs"}
 	var b = B{"w", 5, "l"}
-	Assign(&a, &b)
+	sameValuesAmount := Assign(&a, &b)
+	fmt.Println(sameValuesAmount)
 	fmt.Println("Result value",b.C)
 }
