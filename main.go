@@ -46,27 +46,20 @@ func Assign(sour interface{}, dist interface{}) uint {
 	sourTypes, sourNames, sourValues := structNameTypes(sour)
 	distTypes, distNames, _ := structNameTypes(dist)
 	var result uint = 0
+	ps := reflect.ValueOf(dist)
+	// struct
+	s := ps.Elem()
+	fmt.Println(s.Kind())
 
 	for i := range sourTypes {
 		for j := range distTypes {
 			if sourTypes[i] == distTypes[j] && sourNames[i] == distNames[j] {
 				result++
-				ps := reflect.ValueOf(dist)
-				// struct
-				s := ps.Elem()
-				fmt.Println(s.Kind())
 				if s.Kind() == reflect.Struct {
-
-					// exported field
 					f := s.FieldByName(distNames[j])
 					if f.IsValid() {
-						// A Value can be changed only if it is
-						// addressable and was not obtained by
-						// the use of unexported struct fields.
 						if f.CanSet() {
-							// change value of N
 							if f.Kind() == reflect.String {
-								//x := string(sourValues[i])
 								f.SetString(sourValues[j].String())
 							} else if f.Kind() == reflect.Int {
 								f.SetInt(sourValues[j].Int())
@@ -75,7 +68,6 @@ func Assign(sour interface{}, dist interface{}) uint {
 							} else {
 								fmt.Println("Invalid Data Type")
 							}
-
 						}
 					}
 				}
@@ -127,5 +119,5 @@ func main () {
 	var a = A{"a", 2, "cdcsdcs"}
 	var b = B{"w", 5, "l"}
 	Assign(&a, &b)
-	fmt.Println("Result value",b)
+	fmt.Println("Result value",b.C)
 }
